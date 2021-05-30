@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trevisan.poc.crud.dto.ResponseDTO;
 import com.trevisan.poc.crud.dto.UsuarioDTO;
 import com.trevisan.poc.crud.service.UsuarioService;
 
@@ -30,32 +31,32 @@ public class UsuarioController {
 	private UsuarioService service;
 
 	@GetMapping
-	public ResponseEntity<List<UsuarioDTO>> buscarTodos() {
+	public ResponseEntity<ResponseDTO<List<UsuarioDTO>>> buscarTodos() {
 		List<UsuarioDTO> usuariosDTO = service.buscarTodos();
-		return ResponseEntity.status(HttpStatus.OK).body(usuariosDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO<>(usuariosDTO));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+	public ResponseEntity<ResponseDTO<UsuarioDTO>> buscarPorId(@PathVariable Long id) {
 		UsuarioDTO usuarioDTO = service.buscarPorId(id);
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO<>(usuarioDTO));
 	}
 
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> salvar(@Valid @RequestBody UsuarioDTO dto) {
+	public ResponseEntity<ResponseDTO<UsuarioDTO>> salvar(@Valid @RequestBody UsuarioDTO dto) {
 		UsuarioDTO usuarioDTO = service.salvar(dto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<>(usuarioDTO));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UsuarioDTO> editar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO dto) {
-		UsuarioDTO usuarioDTO = service.editar(id, dto);
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> excluir(@PathVariable Long id) {
-		service.excluir(id);
+	public ResponseEntity<ResponseDTO<Void>> editar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO dto) {
+		service.editar(id, dto);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		service.excluir(id);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
