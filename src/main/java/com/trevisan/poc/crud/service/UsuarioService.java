@@ -39,7 +39,7 @@ public class UsuarioService {
 
 	public UsuarioDTO editar(Long id, UsuarioDTO dto) {
 		validar(id, dto);
-		if (repository.findById(id).isEmpty()) {
+		if (!repository.findById(id).isPresent()) {
 			throw new BusinessException("CR-1", id);
 		}
 
@@ -50,7 +50,7 @@ public class UsuarioService {
 	}
 
 	public void excluir(Long id) {
-		if (repository.findById(id).isEmpty())
+		if (!repository.findById(id).isPresent())
 			throw new BusinessException("CR-1", id);
 
 		repository.deleteById(id);
