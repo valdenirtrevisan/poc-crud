@@ -9,7 +9,11 @@ import com.trevisan.poc.crud.base.EntidadeBase;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@NoArgsConstructor
+@SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
